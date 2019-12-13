@@ -15,5 +15,25 @@ namespace TestingAVLTree
         {
             AVLTree<int> tree = new AVLTree<int>(10, null); 
         }
+
+        [Test]
+        public void InsertingNodeIntoAVLTree()
+        {
+            AVLTree<int> tree = new AVLTree<int>(10, null);
+            //tree.Add(20);
+            //Assert.AreEqual(20, tree.Right.Value);
+            Assert.Fail();
+        }
+
+        [Test]
+        public void FindingRootTree()
+        {
+            AVLTree<int> tree = new AVLTree<int>(10, null);
+            Assert.AreEqual(tree, tree.Head());
+        }
+
+
+
+
     }
 }
