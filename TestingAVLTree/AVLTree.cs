@@ -244,6 +244,33 @@ namespace TestingAVLTree
 
         public void RightLeftRotation()
         {
+            Right.RightRotation();
+            LeftRotation();
+        }
+
+        public void RightRotation()
+        {
+            // Было
+            //     c (this)     
+            //    /     
+            //   b     
+            //  /     
+            // a     
+            //     
+            // Стало    
+            //       b     
+            //      / \     
+            //     a   c  
+
+            // Левый узел текущего элемента становится новым корнем
+            AVLTree<T> newRoot = Left;
+            ReplaceRoot(newRoot);
+
+            // Перемещение правого потомка нового корня на место левого потомка старого корня
+            Left = newRoot.Right;
+
+            // Правым потомком нового корня, становится старый корень.     
+            newRoot.Right = this;
         }
 
         public void ReplaceRoot(AVLTree<T> newRoot)
