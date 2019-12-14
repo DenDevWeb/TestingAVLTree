@@ -205,7 +205,7 @@ namespace TestingAVLTree
         {
             if (this.BalanceFactor > 1)
             {
-                if (Right != null && Right.BalanceFactor < -1)
+                if (Right != null && Right.BalanceFactor < 0)
                 {
                     RightLeftRotation();
                 }
@@ -213,6 +213,17 @@ namespace TestingAVLTree
                 else
                 {
                     LeftRotation();
+                }
+            }
+            else if (this.BalanceFactor < -1)
+            {
+                if (Left != null && Left.BalanceFactor > 0)
+                {
+                    LeftRightRotation();
+                }
+                else
+                {
+                    RightRotation();
                 }
             }
         }
@@ -246,6 +257,12 @@ namespace TestingAVLTree
         {
             Right.RightRotation();
             LeftRotation();
+        }
+
+        public void LeftRightRotation()
+        {
+            Left.LeftRotation();
+            RightRotation();
         }
 
         public void RightRotation()

@@ -188,5 +188,23 @@ namespace TestingAVLTree
             }
         }
 
+        [Test]
+        public void LeftRightRotationTree()
+        {
+            //    10                   
+            //    /               9     
+            //   8     --->      / \    
+            //    \             8   10   
+            //     9                      
+            AVLTree<int> treeLR = new AVLTree<int>(10, null);
+            treeLR.Left = new AVLTree<int>(8, treeLR);
+            treeLR.Left.Right = new AVLTree<int>(9, treeLR.Left);
+            treeLR.LeftRightRotation();
+            bool checkHighLR = (treeLR.Head().Value == 9) && (treeLR.Head().Right.Value == 10) && (treeLR.Head().Left.Value == 8);
+            if(!checkHighLR)
+            {
+                Assert.Fail();
+            }
+        }
     }
 }
