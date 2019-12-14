@@ -41,9 +41,15 @@ namespace TestingAVLTree
             Parent = parent;
         }
 
+        /// <summary>
+        /// Сравнивает текущий узел по указаному значению, возвращет 1, если значение экземпляра больше переданного значения, 
+        /// возвращает -1, когда значение экземпляра меньше переданого значения, 0 - когда они равны.
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
         public int CompareTo(T other)
         {
-            return 5;
+            return Value.CompareTo(other);
         }
 
         /// <summary>

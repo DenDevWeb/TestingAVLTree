@@ -103,6 +103,18 @@ namespace TestingAVLTree
             Assert.AreEqual(3, AVLTree<int>.MaxChildHeight(tree));
         }
 
+        [Test]
+        public void ComparingTheValuesOfTwoNodes()
+        {
+            AVLTree<int> nodeGreater = new AVLTree<int>(12, null);
+            AVLTree<int> nodeLess = new AVLTree<int>(10, null);
+            AVLTree<int> nodeEq = new AVLTree<int>(10, null);
+            if (!(nodeGreater.CompareTo(nodeLess.Value) == 1 && nodeLess.CompareTo(nodeGreater.Value) == -1 && nodeLess.CompareTo(nodeEq.Value) == 0))
+            {
+                Assert.Fail();
+            }
+        }
+
 
 
 
