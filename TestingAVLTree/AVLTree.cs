@@ -207,7 +207,7 @@ namespace TestingAVLTree
             {
                 if (Right != null && Right.BalanceFactor < -1)
                 {
-                    LeftRightRotation();
+                    RightLeftRotation();
                 }
 
                 else
@@ -242,7 +242,7 @@ namespace TestingAVLTree
             newRoot.Left = this;
         }
 
-        public void LeftRightRotation()
+        public void RightLeftRotation()
         {
         }
 

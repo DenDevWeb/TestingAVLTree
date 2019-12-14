@@ -143,7 +143,10 @@ namespace TestingAVLTree
             treeL.Right.Right = new AVLTree<int>(13, treeL.Right);
             treeL.LeftRotation();
             bool checkHighL = (treeL.Head().Value == 12) && (treeL.Head().Right.Value == 13) && (treeL.Head().Left.Value == 10) && (treeL.Head().Left.Right.Value == 11);
-
+            if(!checkHighL)
+            {
+                Assert.Fail();
+            }
         }
 
 
