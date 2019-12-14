@@ -9,6 +9,15 @@ namespace TestingAVLTree
     class AVLTree<T> : IComparable<T> where T : IComparable
     {
         /// <summary>
+        /// Левый потомок
+        /// </summary>
+        AVLTree<T> _left;
+        /// <summary>
+        /// Правый потомок
+        /// </summary>
+        AVLTree<T> _right;
+
+        /// <summary>
         /// Количество узлов дерева
         /// </summary>
         public int Count
@@ -47,6 +56,63 @@ namespace TestingAVLTree
         }
 
         /// <summary>
+        /// Левый потомок
+        /// </summary>
+        public AVLTree<T> Left
+        {
+            get
+            {
+                return _left;
+            }
+
+            internal set
+            {
+                _left = value;
+
+                if (_left != null)
+                {
+                    _left.Parent = this;  // установка указателя на родительский элемент
+                }
+            }
+        }
+
+        /// <summary>
+        /// Правый потомок
+        /// </summary>
+        public AVLTree<T> Right
+        {
+            get
+            {
+                return _right;
+            }
+
+            internal set
+            {
+                _right = value;
+
+                if (_right != null)
+                {
+                    _right.Parent = this; // установка указателя на родительский элемент
+                }
+            }
+        }
+
+        /// Разница между правым и левым поддеревом
+        /// <summary>
+        /// Разница между правым и левым поддеревом:
+        /// больше 1 - перевес справа,
+        /// меньше 1 - первес слева,
+        /// иначе - сбалансировано
+        /// </summary>
+        private int BalanceFactor
+        {
+            get
+            {
+                return MaxChildHeight(Right) - MaxChildHeight(Left);
+            }
+        }
+
+        /// <summary>
         /// Нахождение корня дерева
         /// </summary>
         /// <returns>Корень дерева</returns>
@@ -59,6 +125,21 @@ namespace TestingAVLTree
             }
 
             return current;
+        }
+
+        /// <summary>
+        /// Рекурсивно находит высоту дерева
+        /// </summary>
+        /// <param name="node">Корень, с которого считаем высоту</param>
+        /// <returns></returns>
+        public static int MaxChildHeight(AVLTree<T> node)
+        {
+            if (node != null)
+            {
+                return 1 + Math.Max(MaxChildHeight(node.Left), MaxChildHeight(node.Right));
+            }
+
+            return 0;
         }
 
         /// <summary>
@@ -79,6 +160,50 @@ namespace TestingAVLTree
         /// <param name="value">Значение</param>
         private void AddTo(AVLTree<T> node, T value)
         {
+            // Вариант 1: Добавление нового узла в дерево. Значение добавлемого узла меньше чем значение текущего узла.      
+
+            if (value.CompareTo(node.Value) < 0)
+            {
+                //Создание левого узла, если его нет.
+
+                if (node.Left == null)
+                {
+                    node.Left = new AVLTree<T>(value, node);
+                }
+
+                else
+                {
+                    // Переходим к следующему левому узлу
+                    AddTo(node.Left, value);
+                }
+            }
+            // Вариант 2: Добавлемое значение больше или равно текущему значению.
+
+            else
+            {
+                //Создание правого узла, если его нет.         
+                if (node.Right == null)
+                {
+                    node.Right = new AVLTree<T>(value, node);
+                }
+                else
+                {
+                    // Переход к следующему правому узлу.             
+                    AddTo(node.Right, value);
+                }
+            }
+            node.Balance();
+        }
+
+        public void Balance()
+        {
+            if (this.BalanceFactor > 1)
+            {
+                if (Right != null && Right.BalanceFactor < -1)
+                {
+                    //Левый-правый поворот
+                }
+            }
         }
     }
 }
