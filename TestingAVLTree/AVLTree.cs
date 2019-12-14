@@ -207,9 +207,66 @@ namespace TestingAVLTree
             {
                 if (Right != null && Right.BalanceFactor < -1)
                 {
-                    //Левый-правый поворот
+                    LeftRightRotation();
+                }
+
+                else
+                {
+                    LeftRotation();
                 }
             }
+        }
+
+        public void LeftRotation()
+        {
+
+            // До
+            //     12(this)     
+            //      \     
+            //       15     
+            //        \     
+            //         25     
+            //     
+            // После     
+            //       15     
+            //      / \     
+            //     12  25  
+
+            // Сделать правого потомка новым корнем дерева.
+            AVLTree<T> newRoot = Right;
+            ReplaceRoot(newRoot);
+
+            // Поставить на место правого потомка - левого потомка нового корня.    
+            Right = newRoot.Left;
+            // Сделать текущий узел - левым потомком нового корня.    
+            newRoot.Left = this;
+        }
+
+        public void LeftRightRotation()
+        {
+        }
+
+        public void ReplaceRoot(AVLTree<T> newRoot)
+        {
+            if (this.Parent != null)
+            {
+                if (this.Parent.Left == this)
+                {
+                    this.Parent.Left = newRoot;
+                }
+                else if (this.Parent.Right == this)
+                {
+                    this.Parent.Right = newRoot;
+                }
+            }
+            else
+            {
+                AVLTree<T> h = Head();
+                h = newRoot;
+            }
+
+            newRoot.Parent = this.Parent;
+            this.Parent = newRoot;
         }
     }
 }

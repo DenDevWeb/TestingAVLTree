@@ -115,6 +115,20 @@ namespace TestingAVLTree
             }
         }
 
+        [Test]
+        public void ReplacementOfTheRoot()
+        {
+            AVLTree<int> tree = new AVLTree<int>(12, null);
+            tree.Right = new AVLTree<int>(15, tree);
+            
+            tree.ReplaceRoot(tree.Right);
+
+            if(!(tree.Value == 12 && tree.Right.Value == 15 && tree.Right.Parent == null && tree.Parent == tree.Right && tree.Head() == tree.Right))
+            {
+                Assert.Fail();
+            }
+        }
+
 
 
 
