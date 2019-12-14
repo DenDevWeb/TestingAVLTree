@@ -201,6 +201,206 @@ namespace TestingAVLTree
             node.Balance();
         }
 
+        /// <summary>
+        /// Удалить узел
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public bool Remove(T value)
+        {
+            AVLTree<T> current;
+            current = Find(value); // находим узел с удаляемым значением
+
+            if (current == null) // узел не найден
+            {
+                return false;
+            }
+
+            AVLTree<T> treeToBalance = current.Parent; // баланс дерева относительно узла родителя
+            Count--;                                       // уменьшение колиества узлов
+
+            // Вариант 1: Если удаляемый узел не имеет правого потомка      
+
+            if (current.Right == null) // если нет правого потомка
+            {
+                if (current.Parent == null) // удаляемый узел является корнем
+                {
+                    AVLTree<T> h = Head();
+                    h = current.Left;    // на место корня перемещаем левого потомка
+
+                    if (h != null)
+                    {
+                        h.Parent = null; // убераем ссылку на родителя  
+                    }
+                }
+                else // удаляемый узел не является корнем
+                {
+                    int result = current.Parent.CompareTo(current.Value);
+
+                    if (result > 0)
+                    {
+                        // Если значение родительского узла больше значения удаляемого,
+                        // сделать левого потомка удаляемого узла, левым потомком родителя.  
+
+                        current.Parent.Left = current.Left;
+                    }
+                    else if (result < 0)
+                    {
+
+                        // Если значение родительского узла меньше чем удаляемого,                 
+                        // сделать левого потомка удаляемого узла - правым потомком родительского узла.                 
+
+                        current.Parent.Right = current.Left;
+                    }
+                }
+            }
+
+            // Вариант 2: Если правый потомок удаляемого узла не имеет левого потомка, тогда правый потомок удаляемого узла
+            // становится потомком родительского узла.      
+
+            else if (current.Right.Left == null) // если у правого потомка нет левого потомка
+            {
+                current.Right.Left = current.Left;
+
+                if (current.Parent == null) // текущий элемент является корнем
+                {
+                    AVLTree<T> h = Head();
+                    h = current.Right;
+
+                    if (h != null)
+                    {
+                        h.Parent = null;
+                    }
+                }
+                else
+                {
+                    int result = current.Parent.CompareTo(current.Value);
+                    if (result > 0)
+                    {
+                        // Если значение узла родителя больше чем значение удаляемого узла,                 
+                        // сделать правого потомка удаляемого узла, левым потомком его родителя.                 
+
+                        current.Parent.Left = current.Right;
+                    }
+
+                    else if (result < 0)
+                    {
+                        // Если значение родительского узла меньше значения удаляемого,                 
+                        // сделать правого потомка удаляемого узла - правым потомком родителя.                 
+
+                        current.Parent.Right = current.Right;
+                    }
+                }
+            }
+
+            // Вариант 3: Если правый потомок удаляемого узла имеет левого потомка,      
+            // заместить удаляемый узел, крайним левым потомком правого потомка.     
+            else
+            {
+                // Нахожление крайнего левого узла для правого потомка удаляемого узла.       
+
+                AVLTree<T> leftmost = current.Right.Left;
+
+                while (leftmost.Left != null)
+                {
+                    leftmost = leftmost.Left;
+                }
+
+                // Родительское правое поддерево становится родительским левым поддеревом.         
+
+                leftmost.Parent.Left = leftmost.Right;
+
+                // Присвоить крайнему левому узлу, ссылки на правого и левого потомка удаляемого узла.         
+                leftmost.Left = current.Left;
+                leftmost.Right = current.Right;
+
+                if (current.Parent == null)
+                {
+                    AVLTree<T> h = Head();
+                    h = leftmost;
+
+                    if (h != null)
+                    {
+                        h.Parent = null;
+                    }
+                }
+                else
+                {
+                    int result = current.Parent.CompareTo(current.Value);
+
+                    if (result > 0)
+                    {
+                        // Если значение родительского узла больше значения удаляемого,                 
+                        // сделать крайнего левого потомка левым потомком родителя удаляемого узла.                 
+
+                        current.Parent.Left = leftmost;
+                    }
+                    else if (result < 0)
+                    {
+                        // Если значение родительского узла, меньше чем значение удаляемого,                 
+                        // сделать крайнего левого потомка, правым потомком родителя удаляемого узла.                 
+
+                        current.Parent.Right = leftmost;
+                    }
+                }
+            }
+
+            if (treeToBalance != null)
+            {
+                treeToBalance.Balance();
+            }
+
+            else
+            {
+                AVLTree<T> h = Head();
+                if (h != null)
+                {
+                    h.Balance();
+                }
+            }
+
+            return true;
+
+        }
+
+        /// <summary> 
+        /// Находит и возвращает первый узел который содержит искомое значение.
+        /// Если значение не найдено, возвращает null. 
+        /// Так же возвращает родительский узел.
+        /// </summary> /// 
+        /// <param name="value">Значение поиска</param> 
+        /// <param name="parent">Родительский элемент для найденного значения/// </param> 
+        /// <returns> Найденный узел (или ноль) /// </returns> 
+
+        public AVLTree<T> Find(T value)
+        {
+
+            AVLTree<T> current = this.Head(); // помещаем текущий элемент в корень дерева
+
+            // Пока текщий узел на пустой 
+            while (current != null)
+            {
+                int result = current.CompareTo(value); // сравнение значения текущего элемента с искомым значением
+
+                if (result > 0)
+                {
+                    // Если значение меньшне текущего - переход влево 
+                    current = current.Left;
+                }
+                else if (result < 0)
+                {
+                    // Если значение больше текщего - переход вправо             
+                    current = current.Right;
+                }
+                else
+                {
+                    // Элемент найден      
+                    break;
+                }
+            }
+            return current;
+        }
+
         public void Balance()
         {
             if (this.BalanceFactor > 1)

@@ -206,5 +206,38 @@ namespace TestingAVLTree
                 Assert.Fail();
             }
         }
+
+        [Test]
+        public void DeletingATreeNode()
+        {
+            AVLTree<int> tree = new AVLTree<int>(10, null);
+
+            tree.Add(3);
+            tree.Add(2);                          
+            tree.Add(4);                         
+            tree.Add(12);                           
+            tree.Add(1);                          
+            tree.Remove(10);
+            if (!(tree.Head().Right.Value == 12 && tree.Head().Right.Left.Value == 4 && tree.Head().Right.Right == null))
+            {
+                Assert.Fail();
+            }
+
+        }
+
+        [Test]
+        public void FindingTheValuesOfTheTree()
+        {
+            AVLTree<int> tree = new AVLTree<int>(10, null);
+            tree.Add(3);
+            tree.Add(2);
+            tree.Add(4);
+            tree.Add(12);
+            AVLTree<int> node = tree.Find(4);
+            if (tree.Head().Right.Left != node)
+            {
+                Assert.Fail();
+            }
+        }
     }
 }
