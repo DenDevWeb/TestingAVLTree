@@ -50,7 +50,7 @@ namespace TestingAVLTree
             treeR.Left.Left = new AVLTree<int>(7, treeR.Left);
             treeR.Left.Right = new AVLTree<int>(9, treeR.Left);
             treeR.Balance();
-            bool checkHighR = (treeR.Value == 8) && (treeR.Left.Value == 7) && (treeR.Right.Value == 10) && (treeR.Right.Left.Value == 9);
+            bool checkHighR = (treeR.Head().Value == 8) && (treeR.Head().Left.Value == 7) && (treeR.Head().Right.Value == 10) && (treeR.Head().Right.Left.Value == 9);
 
             //    10             12    
             //     \             / \    
@@ -62,7 +62,7 @@ namespace TestingAVLTree
             treeL.Right.Left = new AVLTree<int>(11, treeL.Right);
             treeL.Right.Right = new AVLTree<int>(13, treeL.Right);
             treeL.Balance();
-            bool checkHighL = (treeL.Value == 12) && (treeL.Right.Value == 13) && (treeL.Left.Value == 10) && (treeL.Left.Right.Value == 11);
+            bool checkHighL = (treeL.Head().Value == 12) && (treeL.Head().Right.Value == 13) && (treeL.Head().Left.Value == 10) && (treeL.Head().Left.Right.Value == 11);
 
             //    10                   
             //     \              11    
@@ -73,7 +73,7 @@ namespace TestingAVLTree
             treeRL.Right = new AVLTree<int>(12, treeRL);
             treeRL.Right.Left = new AVLTree<int>(11, treeRL.Right);
             treeRL.Balance();
-            bool checkHighRL = (treeRL.Value == 11) && (treeRL.Right.Value == 12) && (treeRL.Left.Value == 10);
+            bool checkHighRL = (treeRL.Head().Value == 11) && (treeRL.Head().Right.Value == 12) && (treeRL.Head().Left.Value == 10);
 
             //    10                   
             //    /               9     
@@ -84,7 +84,7 @@ namespace TestingAVLTree
             treeLR.Left = new AVLTree<int>(8, treeLR);
             treeLR.Left.Right = new AVLTree<int>(9, treeLR.Left);
             treeLR.Balance();
-            bool checkHighLR = (treeLR.Value == 9) && (treeLR.Right.Value == 10) && (treeLR.Left.Value == 8);
+            bool checkHighLR = (treeLR.Head().Value == 9) && (treeLR.Head().Right.Value == 10) && (treeLR.Head().Left.Value == 8);
 
             if (!(checkHighR && checkHighL && checkHighRL && checkHighLR))
             {
@@ -129,6 +129,22 @@ namespace TestingAVLTree
             }
         }
 
+        [Test]
+        public void LeftRotationTree()
+        {
+            //    10             12    
+            //     \             / \    
+            //     12  --->    10  13   
+            //     / \          \        
+            //    11 13         11        
+            AVLTree<int> treeL = new AVLTree<int>(10, null);
+            treeL.Right = new AVLTree<int>(12, treeL);
+            treeL.Right.Left = new AVLTree<int>(11, treeL.Right);
+            treeL.Right.Right = new AVLTree<int>(13, treeL.Right);
+            treeL.LeftRotation();
+            bool checkHighL = (treeL.Head().Value == 12) && (treeL.Head().Right.Value == 13) && (treeL.Head().Left.Value == 10) && (treeL.Head().Left.Right.Value == 11);
+
+        }
 
 
 
